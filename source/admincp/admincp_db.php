@@ -60,7 +60,7 @@ if($operation == 'export') {
 		$uc_tablepre = explode('.', UC_DBTABLEPRE);
 		$uc_tablepre = $uc_tablepre[1] ? $uc_tablepre[1] : $uc_tablepre[0];
 		$uc_tablepre = substr($uc_tablepre, '0', '-8');
-		if(UC_CONNECT == 'mysql' && UC_DBHOST == $_G['config']['db'][1]['dbhost'] && UC_DBNAME == $_G['config']['db'][1]['dbname'] && $uc_tablepre == $tablepre) {
+		if(UC_CONNECT == 'mysqli' && UC_DBHOST == $_G['config']['db'][1]['dbhost'] && UC_DBNAME == $_G['config']['db'][1]['dbname'] && $uc_tablepre == $tablepre) {
 			$db_export = 'db_export_discuz_uc';
 			$db_export_key = 'discuz_uc';
 			$db_export_tips = cplang('db_export_tips_uc', array('uc_backup_url' => $uc_backup_url)).cplang('db_export_tips');
@@ -302,7 +302,7 @@ if($operation == 'export') {
 			list($dbhost, $dbport) = explode(':', $dbhost);
 
 			$query = DB::query("SHOW VARIABLES LIKE 'basedir'");
-			list(, $mysql_base) = DB::fetch($query, DB::$drivertype == 'mysqli' ? MYSQLI_NUM : MYSQL_NUM);
+			list(, $mysql_base) = DB::fetch($query, MYSQLI_NUM);
 
 			$dumpfile = addslashes(dirname(dirname(__FILE__))).'/'.$backupfilename.'.sql';
 			@unlink($dumpfile);

@@ -7,7 +7,7 @@
  *      $Id: uc.php 35199 2015-02-04 03:48:10Z hypowang $
  */
 
-error_reporting(0);
+error_reporting(0 ? 0 : 0);
 
 define('UC_CLIENT_VERSION', '1.6.0');
 define('UC_CLIENT_RELEASE', '20110501');
@@ -60,7 +60,7 @@ if(!defined('IN_UC')) {
 
 	if(in_array($get['action'], array('test', 'deleteuser', 'renameuser', 'gettag', 'synlogin', 'synlogout', 'updatepw', 'updatebadwords', 'updatehosts', 'updateapps', 'updateclient', 'updatecredit', 'getcredit', 'getcreditsettings', 'updatecreditsettings', 'addfeed'))) {
 		$uc_note = new uc_note();
-		echo $uc_note->$get['action']($get, $post);
+		echo $uc_note->{$get['action']}($get, $post);
 		exit();
 	} else {
 		exit(API_RETURN_FAILED);

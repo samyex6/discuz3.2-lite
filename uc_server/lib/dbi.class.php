@@ -90,11 +90,11 @@ class ucserver_db {
 	}
 
 	function error() {
-		return (($this->link) ? $this->link->error : mysqli_error());
+		return mysqli_error($this->link);
 	}
 
 	function errno() {
-		return intval(($this->link) ? $this->link->errno : mysqli_errno());
+		return mysqli_errno($this->link);
 	}
 
 	function result($query, $row) {

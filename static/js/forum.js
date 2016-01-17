@@ -43,7 +43,6 @@ function saveData(ignoreempty) {
 				if(el.id) {
 					eval('var check = typeof ' + el.id + '_upload == \'function\'');
 					if(check) {
-						elvalue = elvalue;
 						if($(el.id + '_url')) {
 							elvalue += String.fromCharCode(1) + $(el.id + '_url').value;
 						}

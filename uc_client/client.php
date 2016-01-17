@@ -11,7 +11,7 @@ if(!defined('UC_API')) {
 	exit('Access denied');
 }
 
-error_reporting(0);
+error_reporting(0 ? 0 : 0);
 
 define('IN_UC', TRUE);
 define('UC_CLIENT_VERSION', '1.6.0');
@@ -19,7 +19,7 @@ define('UC_CLIENT_RELEASE', '20141101');
 define('UC_ROOT', substr(__FILE__, 0, -10));
 define('UC_DATADIR', UC_ROOT.'./data/');
 define('UC_DATAURL', UC_API.'/data');
-define('UC_API_FUNC', UC_CONNECT == 'mysql' ? 'uc_api_mysql' : 'uc_api_post');
+define('UC_API_FUNC', UC_CONNECT == 'mysqli' ? 'uc_api_mysql' : 'uc_api_post');
 $GLOBALS['uc_controls'] = array();
 
 function uc_addslashes($string, $force = 0, $strip = FALSE) {
@@ -134,11 +134,7 @@ function uc_api_input($data) {
 function uc_api_mysql($model, $action, $args=array()) {
 	global $uc_controls;
 	if(empty($uc_controls[$model])) {
-		if(function_exists("mysql_connect")) {
-			include_once UC_ROOT.'./lib/db.class.php';
-		} else {
-			include_once UC_ROOT.'./lib/dbi.class.php';
-		}
+		include_once UC_ROOT.'./lib/dbi.class.php';
 		include_once UC_ROOT.'./model/base.php';
 		include_once UC_ROOT."./control/$model.php";
 		eval("\$uc_controls['$model'] = new {$model}control();");
@@ -303,7 +299,7 @@ function uc_fopen($url, $limit = 0, $post = '', $cookie = '', $bysocket = FALSE,
 
 function uc_app_ls() {
 	$return = call_user_func(UC_API_FUNC, 'app', 'ls', array());
-	return UC_CONNECT == 'mysql' ? $return : uc_unserialize($return);
+	return UC_CONNECT == 'mysqli' ? $return : uc_unserialize($return);
 }
 
 function uc_feed_add($icon, $uid, $username, $title_template='', $title_data='', $body_template='', $body_data='', $body_general='', $target_ids='', $images = array()) {
@@ -332,7 +328,7 @@ function uc_feed_add($icon, $uid, $username, $title_template='', $title_data='',
 
 function uc_feed_get($limit = 100, $delete = TRUE) {
 	$return = call_user_func(UC_API_FUNC, 'feed', 'get', array('limit'=>$limit, 'delete'=>$delete));
-	return UC_CONNECT == 'mysql' ? $return : uc_unserialize($return);
+	return UC_CONNECT == 'mysqli' ? $return : uc_unserialize($return);
 }
 
 function uc_friend_add($uid, $friendid, $comment='') {
@@ -349,7 +345,7 @@ function uc_friend_totalnum($uid, $direction = 0) {
 
 function uc_friend_ls($uid, $page = 1, $pagesize = 10, $totalnum = 10, $direction = 0) {
 	$return = call_user_func(UC_API_FUNC, 'friend', 'ls', array('uid'=>$uid, 'page'=>$page, 'pagesize'=>$pagesize, 'totalnum'=>$totalnum, 'direction'=>$direction));
-	return UC_CONNECT == 'mysql' ? $return : uc_unserialize($return);
+	return UC_CONNECT == 'mysqli' ? $return : uc_unserialize($return);
 }
 
 function uc_user_register($username, $password, $email, $questionid = '', $answer = '', $regip = '') {
@@ -359,7 +355,7 @@ function uc_user_register($username, $password, $email, $questionid = '', $answe
 function uc_user_login($username, $password, $isuid = 0, $checkques = 0, $questionid = '', $answer = '', $ip = '') {
 	$isuid = intval($isuid);
 	$return = call_user_func(UC_API_FUNC, 'user', 'login', array('username'=>$username, 'password'=>$password, 'isuid'=>$isuid, 'checkques'=>$checkques, 'questionid'=>$questionid, 'answer'=>$answer, 'ip' => $ip));
-	return UC_CONNECT == 'mysql' ? $return : uc_unserialize($return);
+	return UC_CONNECT == 'mysqli' ? $return : uc_unserialize($return);
 }
 
 function uc_user_synlogin($uid) {
@@ -415,12 +411,12 @@ function uc_user_deleteprotected($username) {
 
 function uc_user_getprotected() {
 	$return = call_user_func(UC_API_FUNC, 'user', 'getprotected', array('1'=>1));
-	return UC_CONNECT == 'mysql' ? $return : uc_unserialize($return);
+	return UC_CONNECT == 'mysqli' ? $return : uc_unserialize($return);
 }
 
 function uc_get_user($username, $isuid=0) {
 	$return = call_user_func(UC_API_FUNC, 'user', 'get_user', array('username'=>$username, 'isuid'=>$isuid));
-	return UC_CONNECT == 'mysql' ? $return : uc_unserialize($return);
+	return UC_CONNECT == 'mysqli' ? $return : uc_unserialize($return);
 }
 
 function uc_user_merge($oldusername, $newusername, $uid, $password, $email) {
@@ -450,7 +446,7 @@ function uc_pm_location($uid, $newpm = 0) {
 
 function uc_pm_checknew($uid, $more = 0) {
 	$return = call_user_func(UC_API_FUNC, 'pm', 'check_newpm', array('uid'=>$uid, 'more'=>$more));
-	return (!$more || UC_CONNECT == 'mysql') ? $return : uc_unserialize($return);
+	return (!$more || UC_CONNECT == 'mysqli') ? $return : uc_unserialize($return);
 }
 
 function uc_pm_send($fromuid, $msgto, $subject, $message, $instantly = 1, $replypmid = 0, $isusername = 0, $type = 0) {
@@ -493,7 +489,7 @@ function uc_pm_list($uid, $page = 1, $pagesize = 10, $folder = 'inbox', $filter 
 	$page = intval($page);
 	$pagesize = intval($pagesize);
 	$return = call_user_func(UC_API_FUNC, 'pm', 'ls', array('uid'=>$uid, 'page'=>$page, 'pagesize'=>$pagesize, 'filter'=>$filter, 'msglen'=>$msglen));
-	return UC_CONNECT == 'mysql' ? $return : uc_unserialize($return);
+	return UC_CONNECT == 'mysqli' ? $return : uc_unserialize($return);
 }
 
 function uc_pm_ignore($uid) {
@@ -508,7 +504,7 @@ function uc_pm_view($uid, $pmid = 0, $touid = 0, $daterange = 1, $page = 0, $pag
 	$pagesize = intval($pagesize);
 	$pmid = @is_numeric($pmid) ? $pmid : 0;
 	$return = call_user_func(UC_API_FUNC, 'pm', 'view', array('uid'=>$uid, 'pmid'=>$pmid, 'touid'=>$touid, 'daterange'=>$daterange, 'page' => $page, 'pagesize' => $pagesize, 'type'=>$type, 'isplid'=>$isplid));
-	return UC_CONNECT == 'mysql' ? $return : uc_unserialize($return);
+	return UC_CONNECT == 'mysqli' ? $return : uc_unserialize($return);
 }
 
 function uc_pm_view_num($uid, $touid, $isplid) {
@@ -523,14 +519,14 @@ function uc_pm_viewnode($uid, $type, $pmid) {
 	$type = intval($type);
 	$pmid = @is_numeric($pmid) ? $pmid : 0;
 	$return = call_user_func(UC_API_FUNC, 'pm', 'viewnode', array('uid'=>$uid, 'type'=>$type, 'pmid'=>$pmid));
-	return UC_CONNECT == 'mysql' ? $return : uc_unserialize($return);
+	return UC_CONNECT == 'mysqli' ? $return : uc_unserialize($return);
 }
 
 function uc_pm_chatpmmemberlist($uid, $plid = 0) {
 	$uid = intval($uid);
 	$plid = intval($plid);
 	$return = call_user_func(UC_API_FUNC, 'pm', 'chatpmmemberlist', array('uid'=>$uid, 'plid'=>$plid));
-	return UC_CONNECT == 'mysql' ? $return : uc_unserialize($return);
+	return UC_CONNECT == 'mysqli' ? $return : uc_unserialize($return);
 }
 
 function uc_pm_kickchatpm($plid, $uid, $touid) {
@@ -569,7 +565,7 @@ function uc_pm_blackls_delete($uid, $username) {
 
 function uc_domain_ls() {
 	$return = call_user_func(UC_API_FUNC, 'domain', 'ls', array('1'=>1));
-	return UC_CONNECT == 'mysql' ? $return : uc_unserialize($return);
+	return UC_CONNECT == 'mysqli' ? $return : uc_unserialize($return);
 }
 
 function uc_credit_exchange_request($uid, $from, $to, $toappid, $amount) {
@@ -583,7 +579,7 @@ function uc_credit_exchange_request($uid, $from, $to, $toappid, $amount) {
 
 function uc_tag_get($tagname, $nums = 0) {
 	$return = call_user_func(UC_API_FUNC, 'tag', 'gettag', array('tagname'=>$tagname, 'nums'=>$nums));
-	return UC_CONNECT == 'mysql' ? $return : uc_unserialize($return);
+	return UC_CONNECT == 'mysqli' ? $return : uc_unserialize($return);
 }
 
 function uc_avatar($uid, $type = 'virtual', $returnhtml = 1) {

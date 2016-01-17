@@ -8,8 +8,8 @@
  */
 
 // ============================================================================
-define('UC_CONNECT', 'mysql');				// 连接 UCenter 的方式: mysql/NULL, 默认为空时为 fscoketopen(), mysql 是直接连接的数据库, 为了效率, 建议采用 mysql
-// 数据库相关 (mysql 连接时)
+define('UC_CONNECT', 'mysqli');				// 连接 UCenter 的方式: mysqli/NULL, 默认为空时为 fscoketopen(), mysqli 是直接连接的数据库, 为了效率, 建议采用 mysqli
+// 数据库相关 (mysqli 连接时)
 define('UC_DBHOST', 'localhost');			// UCenter 数据库主机
 define('UC_DBUSER', 'root');				// UCenter 数据库用户名
 define('UC_DBPW', 'root');				// UCenter 数据库密码
@@ -22,7 +22,7 @@ define('UC_DBCONNECT', '0');				// UCenter 数据库持久连接 0=关闭, 1=打
 define('UC_KEY', 'yeN3g9EbNfiaYfodV63dI1j8Fbk5HaL7W4yaW4y7u2j4Mf45mfg2v899g451k576');	// 与 UCenter 的通信密钥, 要与 UCenter 保持一致
 define('UC_API', 'http://localhost/ucenter/branches/1.5.0/server'); // UCenter 的 URL 地址, 在调用头像时依赖此常量
 define('UC_CHARSET', 'utf-8');				// UCenter 的字符集
-define('UC_IP', '127.0.0.1');				// UCenter 的 IP, 当 UC_CONNECT 为非 mysql 方式时, 并且当前应用服务器解析域名有问题时, 请设置此值
+define('UC_IP', '127.0.0.1');				// UCenter 的 IP, 当 UC_CONNECT 为非 mysqli 方式时, 并且当前应用服务器解析域名有问题时, 请设置此值
 define('UC_APPID', '1');				// 当前应用的 ID
 
 // ============================================================================

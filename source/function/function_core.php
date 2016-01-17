@@ -341,7 +341,7 @@ function checkmobile() {
 	}
 	if(($v = dstrpos($useragent, $wmlbrowser_list))) {
 		$_G['mobile'] = $v;
-		return '3'; //wml版
+		return '3'; //wml鐗�
 	}
 	$brower = array('mozilla', 'chrome', 'safari', 'opera', 'm3gate', 'winwap', 'openwave', 'myop');
 	if(dstrpos($useragent, $brower)) return false;
@@ -427,7 +427,7 @@ function lang($file, $langvar = null, $vars = array(), $default = null) {
 	global $_G;
 	$fileinput = $file;
 	list($path, $file) = explode('/', $file);
-	if(!$file) {
+	if(!$file || $path === 'common') {
 		$file = $path;
 		$path = '';
 	}
@@ -534,7 +534,7 @@ function template($file, $templateid = 0, $tpldir = '', $gettplfile = 0, $primal
 			$indiy = false;
 			$_G['style']['tpldirectory'] = $tpldir ? $tpldir : (defined('TPLDIR') ? TPLDIR : '');
 			$_G['style']['prefile'] = '';
-			$diypath = DISCUZ_ROOT.'./data/diy/'.$_G['style']['tpldirectory'].'/'; //DIY模板文件目录
+			$diypath = DISCUZ_ROOT.'./data/diy/'.$_G['style']['tpldirectory'].'/'; //DIY妯℃澘鏂囦欢鐩綍
 			$preend = '_diy_preview';
 			$_GET['preview'] = !empty($_GET['preview']) ? $_GET['preview'] : '';
 			$curtplname = $oldfile;
@@ -552,7 +552,7 @@ function template($file, $templateid = 0, $tpldir = '', $gettplfile = 0, $primal
 				$tpldir = 'data/diy/'.$_G['style']['tpldirectory'].'/';
 				!$gettplfile && $_G['style']['tplsavemod'] = $tplsavemod;
 				$curtplname = $file;
-				if(isset($_GET['diy']) && $_GET['diy'] == 'yes' || isset($_GET['diy']) && $_GET['preview'] == 'yes') { //DIY模式或预览模式下做以下判断
+				if(isset($_GET['diy']) && $_GET['diy'] == 'yes' || isset($_GET['diy']) && $_GET['preview'] == 'yes') { //DIY妯″紡鎴栭瑙堟ā寮忎笅鍋氫互涓嬪垽鏂�
 					$flag = file_exists($diypath.$file.$preend.'.htm');
 					if($_GET['preview'] == 'yes') {
 						$file .= $flag ? $preend : '';
@@ -585,6 +585,7 @@ function template($file, $templateid = 0, $tpldir = '', $gettplfile = 0, $primal
 
 	$file .= !empty($_G['inajax']) && ($file == 'common/header' || $file == 'common/footer') ? '_ajax' : '';
 	$tpldir = $tpldir ? $tpldir : (defined('TPLDIR') ? TPLDIR : '');
+
 	$templateid = $templateid ? $templateid : (defined('TEMPLATEID') ? TEMPLATEID : '');
 	$filebak = $file;
 
@@ -1164,7 +1165,7 @@ function hookscript($script, $hscript, $type = 'funcs', $param = array(), $func 
 					if(!method_exists($pluginclasses[$classkey], $hookfunc[1])) {
 						continue;
 					}
-					$return = $pluginclasses[$classkey]->$hookfunc[1]($param);
+					$return = $pluginclasses[$classkey]->{$hookfunc[1]}($param);
 
 					if(substr($hookkey, -7) == '_extend' && !empty($_G['setting']['pluginhooks'][$hookkey])) {
 						continue;

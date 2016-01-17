@@ -47,7 +47,7 @@ class WeChatServer {
 		}
 		$param = func_get_args();
 		array_shift($param);
-		return $this->classes[$hook['class']]->$hook['method']($param);
+		return $this->classes[$hook['class']]->{$hook['method']}($param);
 	}
 
 	private function _checkSignature() {

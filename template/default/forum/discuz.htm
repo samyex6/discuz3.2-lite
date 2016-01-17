@@ -218,7 +218,7 @@
 							<!--{eval $ctorderid++;}-->
 
 						<!--{/loop}-->
-						<!--{if ($columnspad = $ctorderid % $forumcolumns) > 0}--><!--{echo str_repeat('<td class="fl_g"'.($forumcolwidth ? " width=\"$forumcolwidth\"" : '').'></td>', $forumcolumns - $columnspad);}--><!--{/if}-->
+						<!--{if ($columnspad = $ctorderid % $forumcolumns) > 0}--><!--{echo str_repeat('<td class="fl_g"'.($forumcolwidth ? ' width="' . $forumcolwidth . '"' : '').'></td>', $forumcolumns - $columnspad);}--><!--{/if}-->
 						</tr>
 					</table>
 
@@ -325,7 +325,7 @@
 							<!--{/if}-->
 						<!--{/if}-->
 						<!--{/loop}-->
-						<!--{if ($columnspad = $favorderid % $forumcolumns) > 0}--><!--{echo str_repeat('<td class="fl_g"'.($forumcolwidth ? " width=\"$forumcolwidth\"" : '').'></td>', $forumcolumns - $columnspad);}--><!--{/if}-->
+						<!--{if ($columnspad = $favorderid % $forumcolumns) > 0}--><!--{echo str_repeat('<td class="fl_g"'.($forumcolwidth ? ' width="'.$forumcolwidth .'"' : '').'></td>', $forumcolumns - $columnspad);}--><!--{/if}-->
 						</tr>
 					</table>
 
@@ -481,7 +481,7 @@
 							<!--{eval $ctorderid++;}-->
 
 						<!--{/loop}-->
-						<!--{if ($columnspad = $ctorderid % $forumcolumns) > 0}--><!--{echo str_repeat('<td class="fl_g"'.($forumcolwidth ? " width=\"$forumcolwidth\"" : '').'></td>', $forumcolumns - $columnspad);}--><!--{/if}-->
+						<!--{if ($columnspad = $ctorderid % $forumcolumns) > 0}--><!--{echo str_repeat('<td class="fl_g"'.($forumcolwidth ? ' width="' . $forumcolwidth . '\"' : '').'></td>', $forumcolumns - $columnspad);}--><!--{/if}-->
 						</tr>
 					</table>
 

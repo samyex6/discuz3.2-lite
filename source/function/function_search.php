@@ -52,8 +52,11 @@ function bat_highlight($message, $words, $color = '#ff0000') {
 			$specialextra = substr($message, $sppos + 3);
 			$message = substr($message, 0, $sppos);
 		}
-		$message = preg_replace(array("/(^|>)([^<]+)(?=<|$)/sUe", "/<highlight>(.*)<\/highlight>/siU"), array("highlight('\\2', \$highlightarray, '\\1')", "<strong><font color=\"$color\">\\1</font></strong>"), $message);
-		if($sppos !== FALSE) {
+        $message = preg_replace_callback("/(^|>)([^<]+)(?=<|$)/sU", function($matches) use ($highlightarray) {
+            return highlight($matches[2], $highlightarray, $matches[1]);
+        }, $message);
+        $message = preg_replace("/<highlight>(.*)<\/highlight>/siU", "<strong><font color=\"$color\">\\1</font></strong>", $message);
+        if($sppos !== FALSE) {
 			$message = $message.chr(0).chr(0).chr(0).$specialextra;
 		}
 	}

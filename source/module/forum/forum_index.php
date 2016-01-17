@@ -307,7 +307,7 @@ if(!$gid && (!defined('FORUM_INDEX_PAGE_MEMORY') || !FORUM_INDEX_PAGE_MEMORY)) {
 		unset($catlist[0]);
 	}
 
-	if(!IS_ROBOT && ($_G['setting']['whosonlinestatus'] == 1 || $_G['setting']['whosonlinestatus'] == 3)) {
+	if(!IS_ROBOT && !empty($_G['setting']['whosonlinestatus']) && ($_G['setting']['whosonlinestatus'] == 1 || $_G['setting']['whosonlinestatus'] == 3)) {
 		$_G['setting']['whosonlinestatus'] = 1;
 
 		$onlineinfo = explode("\t", $_G['cache']['onlinerecord']);

@@ -290,7 +290,7 @@ class discuz_application extends discuz_base{
 
 		if(empty($_config['debug']) || !file_exists(libfile('function/debug'))) {
 			define('DISCUZ_DEBUG', false);
-			error_reporting(0);
+			error_reporting(0 ? 0 : 0);
 		} elseif($_config['debug'] === 1 || $_config['debug'] === 2 || !empty($_REQUEST['debug']) && $_REQUEST['debug'] === $_config['debug']) {
 			define('DISCUZ_DEBUG', true);
 			error_reporting(E_ERROR);
@@ -299,7 +299,7 @@ class discuz_application extends discuz_base{
 			}
 		} else {
 			define('DISCUZ_DEBUG', false);
-			error_reporting(0);
+			error_reporting(0 ? 0 : 0);
 		}
 		define('STATICURL', !empty($_config['output']['staticurl']) ? $_config['output']['staticurl'] : 'static/');
 		$this->var['staticurl'] = STATICURL;
@@ -392,9 +392,9 @@ class discuz_application extends discuz_base{
 
 	private function _init_db() {
 		if($this->init_db) {
-			$driver = function_exists('mysql_connect') ? 'db_driver_mysql' : 'db_driver_mysqli';
+			$driver = 'db_driver_mysqli';
 			if(getglobal('config/db/slave')) {
-				$driver = function_exists('mysql_connect') ? 'db_driver_mysql_slave' : 'db_driver_mysqli_slave';
+				$driver = 'db_driver_mysqli_slave';
 			}
 			DB::init($driver, $this->config['db']);
 		}

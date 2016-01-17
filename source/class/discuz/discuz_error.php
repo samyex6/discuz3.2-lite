@@ -55,8 +55,8 @@ class discuz_error
 		$skipfunc[] = 'discuz_error->db_error';
 		$skipfunc[] = 'discuz_error->template_error';
 		$skipfunc[] = 'discuz_error->system_error';
-		$skipfunc[] = 'db_mysql->halt';
-		$skipfunc[] = 'db_mysql->query';
+		$skipfunc[] = 'db_mysqli->halt';
+		$skipfunc[] = 'db_mysqli->query';
 		$skipfunc[] = 'DB::_execute';
 
 		$show = $log = '';

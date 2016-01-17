@@ -161,11 +161,11 @@ class db_driver_mysqli
 	}
 
 	function error() {
-		return (($this->curlink) ? $this->curlink->error : mysqli_error());
+		return mysqli_error($this->curlink);
 	}
 
 	function errno() {
-		return intval(($this->curlink) ? $this->curlink->errno : mysqli_errno());
+		return mysqli_errno($this->curlink);
 	}
 
 	function result($query, $row = 0) {

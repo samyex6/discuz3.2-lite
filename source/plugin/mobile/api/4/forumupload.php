@@ -10,7 +10,7 @@ if (!defined('IN_MOBILE_API')) {
 	exit('Access Denied');
 }
 
-error_reporting(0);
+error_reporting(0 ? 0 : 0);
 mobile_core::make_cors($_SERVER['REQUEST_METHOD'], REQUEST_METHOD_DOMAIN);
 $_GET['mod'] = 'swfupload';
 $_GET['action'] = 'swfupload';

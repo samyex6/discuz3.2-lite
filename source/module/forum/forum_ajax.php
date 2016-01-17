@@ -530,8 +530,8 @@ EOF;
 					unset($list[$pid]);
 				} else {
 					$post['message'] = preg_replace($_G['cache']['smilies']['searcharray'], '', $post['message']);
-					$post['message'] = preg_replace("/\{\:soso_((e\d+)|(_\d+_\d))\:\}/e", '', $post['message']);
-					$list[$pid]['message'] = cutstr(preg_replace("/\[.+?\]/ies", '', dhtmlspecialchars($post['message'])), 300) ;
+					$post['message'] = preg_replace("/\{\:soso_((e\d+)|(_\d+_\d))\:\}/", '', $post['message']);
+					$list[$pid]['message'] = cutstr(preg_replace("/\[.+?\]/is", '', dhtmlspecialchars($post['message'])), 300) ;
 				}
 			}
 			krsort($list);

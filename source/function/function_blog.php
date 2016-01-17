@@ -313,7 +313,9 @@ function checkhtml($html) {
 }
 
 function blog_bbcode($message) {
-	$message = preg_replace("/\[flash\=?(media|real|mp3)*\](.+?)\[\/flash\]/ie", "blog_flash('\\2', '\\1')", $message);
+	$message = preg_replace_callback("/\[flash\=?(media|real|mp3)*\](.+?)\[\/flash\]/i", function($matches) {
+        return blog_flash($matches[2], $matches[1]);
+    }, $message);
 	return $message;
 }
 function blog_flash($swf_url, $type='') {

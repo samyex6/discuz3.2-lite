@@ -58,14 +58,10 @@ function show_msg($error_no, $error_msg = 'ok', $success = 1, $quit = TRUE) {
 }
 
 function check_db($dbhost, $dbuser, $dbpw, $dbname, $tablepre) {
-	if(!function_exists('mysql_connect') && !function_exists('mysqli_connect')) {
-		show_msg('undefine_func', 'mysql_connect', 0);
-	}
-	$mysqlmode = function_exists('mysql_connect') ? 'mysql' : 'mysqli';
-	$link = ($mysqlmode == 'mysql') ? @mysql_connect($dbhost, $dbuser, $dbpw) : new mysqli($dbhost, $dbuser, $dbpw);
+	$link = new mysqli($dbhost, $dbuser, $dbpw);
 	if(!$link) {
-		$errno = ($mysqlmode == 'mysql') ? mysql_errno() : mysqli_errno();
-		$error = ($mysqlmode == 'mysql') ? mysql_error() : mysqli_error();
+		$errno = mysqli_errno($link);
+		$error = mysqli_error($link);
 		if($errno == 1045) {
 			show_msg('database_errno_1045', $error, 0);
 		} elseif($errno == 2003) {
@@ -74,11 +70,11 @@ function check_db($dbhost, $dbuser, $dbpw, $dbname, $tablepre) {
 			show_msg('database_connect_error', $error, 0);
 		}
 	} else {
-		if($query = (($mysqlmode == 'mysql') ? @mysql_query("SHOW TABLES FROM $dbname") : $link->query("SHOW TABLES FROM $dbname"))) {
+		if($query = $link->query("SHOW TABLES FROM $dbname")) {
 			if(!$query) {
 				return false;
 			}
-			while($row = (($mysqlmode == 'mysql') ? mysql_fetch_row($query) : $query->fetch_row())) {
+			while($row = $query->fetch_row()) {
 				if(preg_match("/^$tablepre/", $row[0])) {
 					return false;
 				}
@@ -416,7 +412,7 @@ function createtable($sql) {
 	$type = strtoupper(preg_replace("/^\s*CREATE TABLE\s+.+\s+\(.+?\).*(ENGINE|TYPE)\s*=\s*([a-z]+?).*$/isU", "\\2", $sql));
 	$type = in_array($type, array('MYISAM', 'HEAP')) ? $type : 'MYISAM';
 	return preg_replace("/^\s*(CREATE TABLE\s+.+\s+\(.+?\)).*$/isU", "\\1", $sql).
-	(mysql_get_server_info() > '4.1' ? " ENGINE=$type DEFAULT CHARSET=".DBCHARSET : " TYPE=$type");
+	" ENGINE=$type DEFAULT CHARSET=".DBCHARSET : " TYPE=$type";
 }
 
 function dir_writeable($dir) {
@@ -696,7 +692,7 @@ function runquery($sql) {
 }
 
 function charcovert($string) {
-	if(!get_magic_quotes_gpc()) {
+	if(!function_exists('get_magic_quotes_gpc') || !get_magic_quotes_gpc()) {
 		$string = str_replace('\'', '\\\'', $string);
 	} else {
 		$string = str_replace('\"', '"', $string);
@@ -822,11 +818,6 @@ function check_env() {
 
 	$errors = array('quit' => false);
 	$quit = false;
-
-	if(!function_exists('mysql_connect')) {
-		$errors[] = 'mysql_unsupport';
-		$quit = true;
-	}
 
 	if(PHP_VERSION < '4.3') {
 		$errors[] = 'php_version_430';
@@ -1028,8 +1019,8 @@ function save_uc_config($config, $file) {
 	if($content = file_get_contents($file)) {
 		$content = trim($content);
 		$content = substr($content, -2) == '?>' ? substr($content, 0, -2) : $content;
-		$link = mysql_connect($ucdbhost, $ucdbuser, $ucdbpw, 1);
-		$uc_connnect = $link && mysql_select_db($ucdbname, $link) ? 'mysql' : '';
+		$link = mysqli_connect($ucdbhost, $ucdbuser, $ucdbpw);
+		$uc_connnect = $link && mysqli_select_db($link, $ucdbname) ? 'mysqli' : '';
 		$content = insertconfig($content, "/define\('UC_CONNECT',\s*'.*?'\);/i", "define('UC_CONNECT', '$uc_connnect');");
 		$content = insertconfig($content, "/define\('UC_DBHOST',\s*'.*?'\);/i", "define('UC_DBHOST', '$ucdbhost');");
 		$content = insertconfig($content, "/define\('UC_DBUSER',\s*'.*?'\);/i", "define('UC_DBUSER', '$ucdbuser');");

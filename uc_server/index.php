@@ -7,8 +7,8 @@
 	$Id: index.php 1139 2012-05-08 09:02:11Z liulanbo $
 */
 
-error_reporting(0);
-set_magic_quotes_runtime(0);
+error_reporting(0 ? 0 : 0);
+if(PHP_VERSION < '5.3.0') set_magic_quotes_runtime(0);
 
 $mtime = explode(' ', microtime());
 $starttime = $mtime[1] + $mtime[0];
@@ -18,7 +18,7 @@ define('UC_ROOT', dirname(__FILE__).'/');
 define('UC_API', strtolower(($_SERVER['HTTPS'] == 'on' ? 'https' : 'http').'://'.$_SERVER['HTTP_HOST'].substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '/'))));
 define('UC_DATADIR', UC_ROOT.'data/');
 define('UC_DATAURL', UC_API.'/data');
-define('MAGIC_QUOTES_GPC', get_magic_quotes_gpc());
+define('MAGIC_QUOTES_GPC', function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc());
 
 unset($GLOBALS, $_ENV, $HTTP_GET_VARS, $HTTP_POST_VARS, $HTTP_COOKIE_VARS, $HTTP_SERVER_VARS, $HTTP_ENV_VARS);
 

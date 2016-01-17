@@ -2171,7 +2171,7 @@ EOT;
 		showsetting('setting_uc_api', 'settingnew[uc][api]', UC_API, 'text', $disable);
 		showsetting('setting_uc_ip', 'settingnew[uc][ip]', UC_IP, 'text', $disable);
 		showsetting('setting_uc_connect', array('settingnew[uc][connect]', array(
-			array('mysql', $lang['setting_uc_connect_mysql'], array('ucmysql' => '')),
+			array('mysqli', $lang['setting_uc_connect_mysql'], array('ucmysql' => '')),
 			array('', $lang['setting_uc_connect_api'], array('ucmysql' => 'none')))), UC_CONNECT, 'mradio', $disable);
 		if(strpos(UC_DBTABLEPRE, '.')) {
 			$prestr = str_replace('`', '', UC_DBTABLEPRE);
@@ -2553,15 +2553,11 @@ EOT;
 		$settingnew['uc']['key'] = addslashes($settingnew['uc']['key'] == '********' ? addslashes(UC_KEY) : $settingnew['uc']['key']);
 
 		if($settingnew['uc']['connect']) {
-			$uc_dblink = function_exists("mysql_connect") ? @mysql_connect($settingnew['uc']['dbhost'], $settingnew['uc']['dbuser'], $ucdbpassnew, 1) : new mysqli($settingnew['uc']['dbhost'], $settingnew['uc']['dbuser'], $ucdbpassnew);
+			$uc_dblink = new mysqli($settingnew['uc']['dbhost'], $settingnew['uc']['dbuser'], $ucdbpassnew);
 			if(!$uc_dblink) {
 				cpmsg('uc_database_connect_error', '', 'error');
 			} else {
-				if(function_exists("mysql_connect")) {
-					mysql_close($uc_dblink);
-				} else {
-					$uc_dblink->close();
-				}
+				$uc_dblink->close();
 			}
 		}
 
@@ -2574,7 +2570,7 @@ EOT;
 		$connect = '';
 		$settingnew['uc'] = daddslashes($settingnew['uc']);
 		if($settingnew['uc']['connect']) {
-			$connect = 'mysql';
+			$connect = 'mysqli';
 			$samelink = ($dbhost == $settingnew['uc']['dbhost'] && $dbuser == $settingnew['uc']['dbuser'] && $dbpw == $ucdbpassnew);
 			$samecharset = !($dbcharset == 'gbk' && UC_DBCHARSET == 'latin1' || $dbcharset == 'latin1' && UC_DBCHARSET == 'gbk');
 			$configfile = str_replace("define('UC_DBHOST', '".addslashes(UC_DBHOST)."')", "define('UC_DBHOST', '".$settingnew['uc']['dbhost']."')", $configfile);
