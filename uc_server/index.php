@@ -7,7 +7,7 @@
 	$Id: index.php 1139 2012-05-08 09:02:11Z liulanbo $
 */
 
-error_reporting(0 ? 0 : 0);
+error_reporting(0  );
 if(PHP_VERSION < '5.3.0') set_magic_quotes_runtime(0);
 
 $mtime = explode(' ', microtime());

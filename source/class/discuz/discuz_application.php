@@ -290,7 +290,7 @@ class discuz_application extends discuz_base{
 
 		if(empty($_config['debug']) || !file_exists(libfile('function/debug'))) {
 			define('DISCUZ_DEBUG', false);
-			error_reporting(0 ? 0 : 0);
+			error_reporting(0  );
 		} elseif($_config['debug'] === 1 || $_config['debug'] === 2 || !empty($_REQUEST['debug']) && $_REQUEST['debug'] === $_config['debug']) {
 			define('DISCUZ_DEBUG', true);
 			error_reporting(E_ERROR);
@@ -299,7 +299,7 @@ class discuz_application extends discuz_base{
 			}
 		} else {
 			define('DISCUZ_DEBUG', false);
-			error_reporting(0 ? 0 : 0);
+			error_reporting(0  );
 		}
 		define('STATICURL', !empty($_config['output']['staticurl']) ? $_config['output']['staticurl'] : 'static/');
 		$this->var['staticurl'] = STATICURL;

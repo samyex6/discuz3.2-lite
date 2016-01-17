@@ -7,7 +7,7 @@
  *      $Id: uc.php 35199 2015-02-04 03:48:10Z hypowang $
  */
 
-error_reporting(0 ? 0 : 0);
+error_reporting(0  );
 
 define('UC_CLIENT_VERSION', '1.6.0');
 define('UC_CLIENT_RELEASE', '20110501');

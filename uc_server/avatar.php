@@ -8,7 +8,7 @@
 */
 
 
-error_reporting(0 ? 0 : 0);
+error_reporting(0  );
 
 _get_script_url();
 define('UC_API', strtolower(($_SERVER['HTTPS'] == 'on' ? 'https' : 'http').'://'.$_SERVER['HTTP_HOST'].substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '/'))));

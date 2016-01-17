@@ -7,7 +7,7 @@
 	$Id: dbbak.php 17033 2008-12-04 02:24:03Z zhaoxiongfei $
 */
 
-error_reporting(0 ? 0 : 0);
+error_reporting(0  );
 
 $code = @$_GET['code'];
 $apptype = @$_GET['apptype'];

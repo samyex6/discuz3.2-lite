@@ -10,7 +10,7 @@
 !defined('IN_UC') && exit('Access Denied');
 
 if($mail_setting['mailsilent']) {
-	error_reporting(0 ? 0 : 0);
+	error_reporting(0  );
 }
 
 $maildelimiter = $mail_setting['maildelimiter'] == 1 ? "\r\n" : ($mail_setting['maildelimiter'] == 2 ? "\r" : "\n");
